@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>舞蹈视频播放</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .video-container {
+        aspect-ratio: 16 / 9;
+      }
+      .popup-animation {
+        animation: fadeIn 0.3s ease forwards, fadeOut 0.3s ease 2.7s forwards;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      @keyframes fadeOut {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 0; transform: scale(0.9); }
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="max-w-4xl w-full bg-white rounded-xl shadow-lg overflow-hidden">
+    <!-- 视频容器 -->
+    <div class="relative video-container bg-gray-900">
+      <video id="danceVideo" class="w-full h-full object-cover hidden" controls>
+        <source src="C:\Users\28384\Downloads\mmexport1752761961601.mp4" type="video/mp4">
+        你的浏览器不支持视频播放
+      </video>
+      
+      <!-- 视频封面 -->
+      <div id="videoCover" class="absolute inset-0 cursor-pointer">
+        <img src="https://imgs.qiubiaoqing.com/qiubiaoqing/user_pre_up_imgs/6842afbb67c94394.jpg?imageView2/1/w/80/h/80" alt="视频封面" class="w-full h-full object-cover opacity-90">
+      </div>
+    </div>
+    
+    <!-- 视频信息 -->
+    <div class="p-5">
+      <h2 class="text-xl font-bold text-gray-800 mb-2">金发粉裙女子热舞视频爆出</h2>
+      <p class="text-gray-600 text-sm">点击播放按钮观看完整视频(我不行了)</p>
+    </div>
+  </div>
+
+  <!-- 播放完成弹窗 (默认隐藏) -->
+  <div id="finishPopup" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 opacity-0 pointer-events-none transition-opacity 0.3s">
+    <div class="bg-white rounded-xl p-6 max-w-md w-full text-center popup-animation">
+      <p class="text-2xl md:text-3xl font-bold text-pink-500 mb-4"> 嘻嘻嘻 哈哈哈 辰蛋🥚我不行了</p>
+      <p class="text-gray-500 text-sm">3秒后自动关闭...</p>
+    </div>
+  </div>
+
+  <script>
+    const videoCover = document.getElementById('videoCover');
+    const danceVideo = document.getElementById('danceVideo');
+    const finishPopup = document.getElementById('finishPopup');
+    
+    // 点击封面播放视频
+    videoCover.addEventListener('click', () => {
+      videoCover.classList.add('hidden');
+      danceVideo.classList.remove('hidden');
+      danceVideo.play().catch(err => {
+        console.log('播放失败:', err); // 调试播放失败的情况
+      });
+    });
+    
+    // 视频播放完成后触发
+    danceVideo.addEventListener('ended', () => {
+      console.log('视频播放结束，准备显示弹窗'); // 调试：确认事件触发
+      
+      // 显示封面
+      danceVideo.classList.add('hidden');
+      videoCover.classList.remove('hidden');
+      
+      // 显示弹窗
+      finishPopup.style.opacity = '1';
+      finishPopup.style.pointerEvents = 'auto';
+      console.log('弹窗已显示'); // 调试：确认弹窗样式已设置
+      
+      // 3秒后自动隐藏弹窗
+      setTimeout(() => {
+        finishPopup.style.opacity = '0';
+        finishPopup.style.pointerEvents = 'none';
+        console.log('弹窗已隐藏'); // 调试：确认弹窗隐藏
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
